@@ -6,3 +6,10 @@ document.getElementById("langBtn")?.addEventListener("click",()=>{lang=lang==="r
 const themeBtn=document.getElementById("themeBtn");const saved=localStorage.getItem("orevo-theme");if(saved)document.documentElement.dataset.theme=saved;themeBtn?.addEventListener("click",()=>{const t=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=t;localStorage.setItem("orevo-theme",t)});
 document.getElementById("year").textContent=new Date().getFullYear();
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:.12});document.querySelectorAll(".reveal").forEach(e=>io.observe(e));
+
+// App screen gallery: buttons, wheel and pointer drag
+const rail=document.getElementById("screenRail");
+const moveScreens=(dir)=>rail?.scrollBy({left:dir*Math.min(540,window.innerWidth*.72),behavior:"smooth"});
+document.getElementById("screensPrev")?.addEventListener("click",()=>moveScreens(-1));
+document.getElementById("screensNext")?.addEventListener("click",()=>moveScreens(1));
+if(rail){let down=false,startX=0,startScroll=0;rail.addEventListener("pointerdown",e=>{down=true;startX=e.clientX;startScroll=rail.scrollLeft;rail.setPointerCapture(e.pointerId)});rail.addEventListener("pointermove",e=>{if(down)rail.scrollLeft=startScroll-(e.clientX-startX)});rail.addEventListener("pointerup",()=>down=false);rail.addEventListener("pointercancel",()=>down=false);}
